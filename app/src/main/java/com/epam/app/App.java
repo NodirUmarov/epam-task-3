@@ -5,8 +5,8 @@ package com.epam.app;
 
 import com.epam.list.LinkedList;
 
-import static com.epam.utilities.StringUtils.join;
-import static com.epam.utilities.StringUtils.split;
+import static com.epam.domain.StringUtils.join;
+import static com.epam.domain.StringUtils.split;
 import static com.epam.app.MessageUtils.getMessage;
 
 import org.apache.commons.text.WordUtils;
