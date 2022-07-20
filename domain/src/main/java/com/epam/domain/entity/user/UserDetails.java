@@ -1,5 +1,7 @@
 package com.epam.domain.entity;
 
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -9,6 +11,9 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
+ */
 @Entity
 @Getter
 @Setter
@@ -21,9 +26,6 @@ public class UserDetails {
     @Column(name = "username", nullable = false, length = 100, unique = true)
     private String username;
 
-    @Column(name = "email", nullable = false, length = 100, unique = true)
-    private String email;
-
     @Column(name = "phone_number", length = 100, unique = true)
     private String phoneNumber;
 
@@ -33,8 +35,14 @@ public class UserDetails {
     @Column(name = "last_name", length = 100)
     private String lastName;
 
+    @Column(name = "patronymic", length = 100)
+    private String patronymic;
+
     @Column(name = "date_of_birth")
     private LocalDate dob;
+
+    @Transient
+    private String fullName;
 
     @Override
     public boolean equals(Object o) {
@@ -47,5 +55,14 @@ public class UserDetails {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @PostLoad
+    private void onLoad() {
+        fullName = getNonNullString(firstName) + " " + getNonNullString(patronymic) + " " + getNonNullString(lastName);
+    }
+
+    private String getNonNullString(String str) {
+        return str == null ? "" : str;
     }
 }

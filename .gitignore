@@ -52,7 +52,4 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-.env
-.env
-application.properties
-.gitattributes
+**/src/main/resources/.env
