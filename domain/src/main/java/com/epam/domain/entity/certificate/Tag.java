@@ -1,9 +1,8 @@
-package com.epam.domain.entity;
+package com.epam.domain.entity.certificate;
 
 import com.epam.domain.entity.config.BaseEntity;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

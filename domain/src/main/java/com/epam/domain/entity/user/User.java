@@ -1,9 +1,11 @@
-package com.epam.domain.entity;
+package com.epam.domain.entity.user;
 
 import com.epam.domain.entity.config.BaseEntity;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -15,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
@@ -34,6 +38,17 @@ public class User extends BaseEntity<String> {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_details_ID", updatable = false, referencedColumnName = "username")
     private UserDetails userDetails;
+
+    @Column
+    private LocalDateTime lastLoginDate;
+
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime lastUpdatedDate;
 
     @Override
     public boolean equals(Object o) {

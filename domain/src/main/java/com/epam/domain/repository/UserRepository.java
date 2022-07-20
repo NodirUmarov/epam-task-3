@@ -1,6 +1,6 @@
 package com.epam.domain.repository;
 
-import com.epam.domain.entity.User;
+import com.epam.domain.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

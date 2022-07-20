@@ -1,15 +1,18 @@
-package com.epam.domain.entity;
+package com.epam.domain.entity.user;
 
-import javax.persistence.PostLoad;
-import javax.persistence.Transient;
-import lombok.*;
-import org.hibernate.Hibernate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.epam.domain.entity.config.BaseEntity;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 /**
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
@@ -20,22 +23,18 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetails {
+public class UserDetails extends BaseEntity<String> {
 
-    @Id
-    @Column(name = "username", nullable = false, length = 100, unique = true)
-    private String username;
-
-    @Column(name = "phone_number", length = 100, unique = true)
+    @Column(length = 100, unique = true)
     private String phoneNumber;
 
-    @Column(name = "first_name", length = 100)
+    @Column(length = 100)
     private String firstName;
 
-    @Column(name = "last_name", length = 100)
+    @Column(length = 100)
     private String lastName;
 
-    @Column(name = "patronymic", length = 100)
+    @Column(length = 100)
     private String patronymic;
 
     @Column(name = "date_of_birth")
@@ -49,7 +48,7 @@ public class UserDetails {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         UserDetails that = (UserDetails) o;
-        return username != null && Objects.equals(username, that.username);
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

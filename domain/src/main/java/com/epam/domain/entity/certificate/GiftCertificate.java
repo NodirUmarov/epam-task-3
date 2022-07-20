@@ -1,4 +1,4 @@
-package com.epam.domain.entity;
+package com.epam.domain.entity.certificate;
 
 import com.epam.domain.entity.config.BaseAuditableEntity;
 import com.epam.domain.entity.user.UserDetails;
@@ -20,15 +20,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
 
-    @Column(name = "certificate_name", nullable = false, length = 100, updatable = false, unique = true)
+    @Column(nullable = false, length = 100, updatable = false, unique = true)
     private String certificateName;
 
-    @Column(name = "description")
+    @Column
     private String description;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(name = "duration", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime duration;
 }
