@@ -1,4 +1,5 @@
 plugins {
+    id 'com.epam.application-conventions'
 }
 
 dependencies {
