@@ -4,6 +4,8 @@ import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.mapper.dtoMapper.TagMapper;
 import com.epam.business.mapper.requestMapper.CreateTagMapper;
 import com.epam.business.model.dto.TagDto;
+import com.epam.business.model.enums.SortType;
+import com.epam.business.model.enums.TagSortBy;
 import com.epam.business.model.request.TagRequest;
 import com.epam.domain.entity.certificate.Tag;
 import com.epam.domain.repository.TagRepository;
@@ -45,11 +47,13 @@ public interface TagService {
      * If nothing found, empty set will be returned</p>
      *
      * @param quantity must not be null nor negative or zero values
-     * @param page     must not be null nor negative
+     * @param page must not be null nor negative
+     * @param sortType for configuring the order of elements. Values allowed {@link SortType#ASC}, {@link SortType#DESC}, {@link SortType#NONE}
+     * @param sortBy for configuring the attribute to sort by. Values allowed {@link TagSortBy#ID}, {@link TagSortBy#NAME}
      * @return {@link Set} of {@link TagDto TagDtos} in natural order
      * @since 0.1.0
      */
-    Set<TagDto> getAllTags(Integer quantity, Integer page);
+    Set<TagDto> getAllTags(Integer quantity, Integer page, SortType sortType, TagSortBy sortBy);
 
     /**
      * <p>Deletes the tag by given id</p>

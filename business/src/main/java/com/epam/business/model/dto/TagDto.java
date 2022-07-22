@@ -21,5 +21,5 @@ public class TagDto implements Serializable {
             name = "name",
             required = true,
             position = 1)
-    private final String name;
+    private final String tagName;
 }
