@@ -1,10 +1,12 @@
 package com.epam.domain.entity.user;
 
+import com.epam.domain.repository.TagRepository;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 
@@ -13,7 +15,6 @@ import org.hibernate.Hibernate;
  */
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Password {
 
     @EmbeddedId

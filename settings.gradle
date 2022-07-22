@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'epam-task-3'
-include('app', 'list', 'domain')
+include('app', 'business', 'domain')
