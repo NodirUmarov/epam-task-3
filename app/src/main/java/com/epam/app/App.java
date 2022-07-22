@@ -3,7 +3,7 @@
  */
 package com.epam.app;
 
-import com.epam.list.LinkedList;
+import com.epam.business.LinkedList;
 
 import static com.epam.domain.StringUtils.join;
 import static com.epam.domain.StringUtils.split;
