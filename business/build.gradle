@@ -1,5 +1,22 @@
 plugins {
     id 'com.epam.application-conventions'
+    id 'com.epam.base-dependencies-conventions'
+}
+
+dependencies {
+    implementation project(":domain")
+
+    implementation 'org.springframework:spring-aop:2.5.6'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+    testImplementation "org.assertj:assertj-core:3.23.1"
+
+    implementation 'org.hibernate.validator:hibernate-validator:7.0.4.Final'
+    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
+    implementation "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    compileOnly "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 }
 
 dependencies {
