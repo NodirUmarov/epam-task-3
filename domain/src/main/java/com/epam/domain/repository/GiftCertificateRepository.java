@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface GiftCertificateRepository extends JpaRepository<GiftCertificate, Long> {
     Optional<GiftCertificate> findByCertificateName(String name);
     Page<GiftCertificate> findByTags_TagName(Pageable pageable);
+    boolean existsByCertificateName(String name);
 }
