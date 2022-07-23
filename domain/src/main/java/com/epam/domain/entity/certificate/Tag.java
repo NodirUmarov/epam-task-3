@@ -1,6 +1,7 @@
 package com.epam.domain.entity.certificate;
 
 import com.epam.domain.entity.config.BaseEntity;
+import javax.persistence.Table;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@Table(name = "tb_tags")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag extends BaseEntity<Long> {

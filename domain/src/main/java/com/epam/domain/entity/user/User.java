@@ -1,5 +1,6 @@
 package com.epam.domain.entity.user;
 
+import com.epam.domain.entity.certificate.GiftCertificate;
 import com.epam.domain.entity.config.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,8 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @Setter
 @Builder
+@Table(name = "tb_users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity<String> {
@@ -36,7 +40,7 @@ public class User extends BaseEntity<String> {
     private List<Password> password;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_details_ID", updatable = false, referencedColumnName = "username")
+    @JoinColumn(name = "user_details_ID", updatable = false, referencedColumnName = "ID")
     private UserDetails userDetails;
 
     @Column
@@ -49,6 +53,10 @@ public class User extends BaseEntity<String> {
     @UpdateTimestamp
     @Column
     private LocalDateTime lastUpdatedDate;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "gift_certificates", referencedColumnName = "ID")
+    List<GiftCertificate> giftCertificates;
 
     @Override
     public boolean equals(Object o) {

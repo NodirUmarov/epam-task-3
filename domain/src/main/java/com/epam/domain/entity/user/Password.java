@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import org.hibernate.Hibernate;
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
  */
 @Entity
+@Table(name = "tb_passwords")
 @NoArgsConstructor
 public class Password {
 
