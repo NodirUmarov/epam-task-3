@@ -41,6 +41,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto create(CreateGiftCertificateRequest request) throws EntityExistsException {
         GiftCertificate toSave = createGiftCertificateMapper.toEntity(request);
+        if (giftCertificateRepository.existsByCertificateName(request.getName())) {
+            throw new EntityExistsException();
+        }
         return giftCertificateMapper.toDto(giftCertificateRepository.save(toSave));
     }
 
