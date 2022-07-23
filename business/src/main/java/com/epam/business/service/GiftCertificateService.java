@@ -5,7 +5,9 @@ import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.exception.EntityNameNotFoundException;
 import com.epam.business.mapper.dtoMapper.GiftCertificateMapper;
 import com.epam.business.mapper.requestMapper.CreateGiftCertificateMapper;
+import com.epam.business.mapper.requestMapper.UpdateGiftCertificateMapper;
 import com.epam.business.model.dto.GiftCertificateDto;
+import com.epam.business.model.enums.GiftCertificateSortBy;
 import com.epam.business.model.enums.SortType;
 import com.epam.business.model.request.CreateGiftCertificateRequest;
 import com.epam.business.model.request.TagRequest;
@@ -30,10 +32,8 @@ import org.springframework.stereotype.Service;
  *      - delete the certificate by its id</li>
  * <li><b>updateById</b>
  *      - updated only changed field and return {@link GiftCertificateDto}</li>
- * <li><b>untag</b>
- *      - removes given tags from the certificate and return updated{@link GiftCertificateDto}</li>
- * <li><b>addTags</b>
- *      - adds given tags to the certificate and return updated {@link GiftCertificateDto}</li>
+ * <li><b>updateTags</b>
+ *      - Changes the set of tags of certificate and return updated{@link GiftCertificateDto}</li>
  * </ul>
  *
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/15/2022
@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
  * @see GiftCertificate
  * @see GiftCertificateMapper
  * @see CreateGiftCertificateMapper
+ * @see UpdateGiftCertificateMapper
  * @since 0.1.0
  */
 
@@ -92,15 +93,15 @@ public interface GiftCertificateService {
      * in requested quantity and from requested position
      * @since 0.1.0
      */
-    Set<GiftCertificateDto> getByTag(String tag, Integer quantity, Integer page, SortType sortType);
+    Set<GiftCertificateDto> getByTag(String tag, Integer quantity, Integer page, SortType sortType, GiftCertificateSortBy sortBy);
 
-    /**
-     * <p>Deletes certificate by given id</p>
-     *
-     * @param id must not be null
-     * @throws EntityIdNotFoundException if nothing found by provided ID
-     * @since 0.1.0
-     */
+        /**
+         * <p>Deletes certificate by given id</p>
+         *
+         * @param id must not be null
+         * @throws EntityIdNotFoundException if nothing found by provided ID
+         * @since 0.1.0
+         */
     void deleteById(Long id) throws EntityIdNotFoundException;
 
     /**
@@ -108,30 +109,18 @@ public interface GiftCertificateService {
      *
      * @param request must not be null
      * @return {@link GiftCertificateDto} with updated fields. Will never be null
-     * @throws EntityIdNotFoundException if certificate with given id not found
      * @since 0.1.0
      */
-    GiftCertificateDto updateById(Long id, UpdateGiftCertificateRequest request) throws EntityIdNotFoundException;
+    GiftCertificateDto updateById(Long id, UpdateGiftCertificateRequest request);
 
     /**
-     * <p>Removes all given tags from certificate.</p>
+     * <p>Changes the set of tags of certificate.</p>
      *
-     * @param id   must not be null nor negative or zero values
+     * @param id  must not be null nor negative or zero values
      * @param tags elements must not be null
      * @return updated {@link GiftCertificateDto}
      * @throws EntityIdNotFoundException if certificate with given id not found
      * @since 0.1.0
      */
-    GiftCertificateDto untag(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException;
-
-    /**
-     * <p>Adds all given tags to certificate.
-     *
-     * @param id   must not be null nor negative or zero values
-     * @param tags elements must not be null
-     * @return updated {@link GiftCertificateDto}
-     * @throws EntityIdNotFoundException if certificate with given id not found
-     * @since 0.1.0
-     */
-    GiftCertificateDto addTags(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException;
+    GiftCertificateDto changeSetOfTags(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException;
 }

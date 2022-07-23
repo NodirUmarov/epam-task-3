@@ -38,8 +38,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Set<TagDto> getAllTags(Integer quantity, Integer page, SortType sortType, TagSortBy sortBy) {
-        Sort sort = Sort.by(sortBy.getAttributeName());
+    public Set<TagDto> getAllTags(Integer quantity, Integer page, SortType sortType, TagSortBy tagSortBy) {
+        Sort sort = Sort.by(tagSortBy.getAttributeName());
 
         switch (sortType) {
             case NONE:

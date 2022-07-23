@@ -25,7 +25,7 @@ public class GiftCertificateDto implements Serializable {
             name = "name",
             required = true,
             position = 1)
-    private final String name;
+    private final String certificateName;
 
     @ApiModelProperty(value = "Description of the gift certificate",
             name = "description",
