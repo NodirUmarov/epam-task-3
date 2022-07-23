@@ -36,7 +36,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class User extends BaseEntity<String> {
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "username", nullable = false)
+    @JoinColumn(name = "username_ID",referencedColumnName = "ID", nullable = false)
     private List<Password> password;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
