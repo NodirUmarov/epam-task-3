@@ -2,9 +2,6 @@ package com.epam.business.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
@@ -18,14 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateGiftCertificateRequest {
 
-    @NotBlank
     @ApiModelProperty(value = "The unique name of the gift certificate",
             name = "name",
             required = true)
     private String name;
 
-    @NotNull
-    @PositiveOrZero
+
     @ApiModelProperty(value = "The price of the gift certificate",
             name = "price",
             required = true,
@@ -33,7 +28,6 @@ public class CreateGiftCertificateRequest {
             position = 1)
     private BigDecimal price;
 
-    @PositiveOrZero
     @ApiModelProperty(value = "Duration of the gift certificate in days",
             name = "duration",
             allowableValues = "[0, infinity]",

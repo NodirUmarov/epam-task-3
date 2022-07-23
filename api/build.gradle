@@ -1,0 +1,11 @@
+plugins {
+    id 'com.epam.application-conventions'
+    id 'com.epam.base-dependencies-conventions'
+}
+
+dependencies {
+    implementation project(":business")
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "io.springfox:springfox-swagger-ui:$swaggerUIVersion"
+    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
+}
