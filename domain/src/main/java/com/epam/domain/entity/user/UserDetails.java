@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ import org.hibernate.Hibernate;
 @Getter
 @Setter
 @Builder
+@Table(name = "tb_user_details")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetails extends BaseEntity<String> {
