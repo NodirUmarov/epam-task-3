@@ -26,11 +26,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 public abstract class BaseAuditableEntity<U, ID extends Serializable> extends BaseEntity<ID> {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "created_by_ID", referencedColumnName = "ID", nullable = false, updatable = false)
     private U createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "last_modified_by_ID", referencedColumnName = "ID", nullable = false)
     private U lastModifiedBy;
 
     @CreationTimestamp
