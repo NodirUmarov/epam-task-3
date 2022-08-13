@@ -4,20 +4,23 @@ import com.epam.domain.entity.config.BaseAuditableEntity;
 import com.epam.domain.entity.user.UserDetails;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.ToString.Exclude;
+import org.hibernate.Hibernate;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
@@ -25,10 +28,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Builder
-@Table(name = "tb_gift_certificates")
+@Audited
+@ToString
+@AuditTable(value = "tb_gift_certificates_aud", schema = "audit_schema")
+@Table(name = "tb_gift_certificates", schema = "gift_certificates_schema")
 @NoArgsConstructor
-@AllArgsConstructor
 public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
 
     @Column(nullable = false, length = 100, updatable = false, unique = true)
@@ -43,14 +47,31 @@ public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
     @Column(nullable = false)
     private LocalDateTime duration;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_details_ID", referencedColumnName = "ID", nullable = false)
-    UserDetails userDetails;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_has_gift_certificate", schema = "gift_certificates_schema",
+            joinColumns = @JoinColumn(name = "certificate_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "user_details_ID", referencedColumnName = "ID"))
+    @Exclude
+    List<UserDetails> giftToUsers;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "gift_certificate_has_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "tag_ID", referencedColumnName = "ID"))
-    private Set<Tag> tags;
+            inverseJoinColumns = @JoinColumn(name = "tag_ID", referencedColumnName = "ID"),
+            schema = "gift_certificates_schema")
+    @Exclude
+    private List<Tag> tags;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        GiftCertificate that = (GiftCertificate) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

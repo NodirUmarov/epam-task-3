@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: ${DEV_DB_DRIVER}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}
+    url: ${DEV_DB_URL}
+
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    properties:
+      ddl-auto: create
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        dialect: ${DEV_DB_DIALECT}
+
+org:
+  hibernate:
+    envers:
+      default_schema: audit_tables

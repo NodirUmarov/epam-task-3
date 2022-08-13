@@ -1,19 +1,28 @@
 package com.epam.domain.entity.user;
 
-import com.epam.domain.entity.config.BaseEntity;
+import com.epam.domain.entity.certificate.GiftCertificate;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 import org.hibernate.Hibernate;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
@@ -21,11 +30,16 @@ import org.hibernate.Hibernate;
 @Entity
 @Getter
 @Setter
-@Builder
-@Table(name = "tb_user_details")
+@Audited
+@ToString(callSuper = true)
+@AuditTable(value = "tb_user_details_aud", schema = "audit_schema")
+@Table(name = "tb_user_details", schema = "gift_certificates_schema")
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserDetails extends BaseEntity<String> {
+public class UserDetails {
+
+    @Id
+    @Column(name = "ID", updatable = false, unique = true, nullable = false)
+    private String id;
 
     @Column(length = 100, unique = true)
     private String phoneNumber;
@@ -41,6 +55,16 @@ public class UserDetails extends BaseEntity<String> {
 
     @Column(name = "date_of_birth")
     private LocalDate dob;
+
+    @Column(name = "send_emails")
+    private Boolean sendEmail;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_has_gift_certificate", schema = "gift_certificates_schema",
+            joinColumns = @JoinColumn(name = "user_details_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "certificate_ID", referencedColumnName = "ID"))
+    @Exclude
+    private List<GiftCertificate> giftCertificates;
 
     @Transient
     private String fullName;
@@ -58,9 +82,10 @@ public class UserDetails extends BaseEntity<String> {
         return getClass().hashCode();
     }
 
+    @PrePersist
     @PostLoad
     private void onLoad() {
-        fullName = getNonNullString(firstName) + " " + getNonNullString(patronymic) + " " + getNonNullString(lastName);
+        fullName = getNonNullString(firstName) + " " + getNonNullString(lastName) + " " + getNonNullString(patronymic);
     }
 
     private String getNonNullString(String str) {

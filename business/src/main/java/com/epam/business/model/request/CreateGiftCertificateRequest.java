@@ -2,11 +2,8 @@ package com.epam.business.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,14 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateGiftCertificateRequest {
 
-    @NotBlank
-    @ApiModelProperty(value = "The unique name of the gift certificate",
-            name = "name",
+    @ApiModelProperty(value = "The email of the user who creates certificate",
+            name = "createdBy",
             required = true)
-    private String name;
+    private String createdBy;
 
-    @NotNull
-    @PositiveOrZero
+    @ApiModelProperty(value = "The unique name of the gift certificate",
+            name = "certificateName",
+            required = true)
+    private String certificateName;
+
     @ApiModelProperty(value = "The price of the gift certificate",
             name = "price",
             required = true,
@@ -33,7 +32,6 @@ public class CreateGiftCertificateRequest {
             position = 1)
     private BigDecimal price;
 
-    @PositiveOrZero
     @ApiModelProperty(value = "Duration of the gift certificate in days",
             name = "duration",
             allowableValues = "[0, infinity]",
@@ -49,5 +47,5 @@ public class CreateGiftCertificateRequest {
     @ApiModelProperty(value = "Names of tags that gift certificate has",
             name = "tags",
             position = 4)
-    private Set<TagRequest> tags;
+    private List<TagRequest> tags;
 }
