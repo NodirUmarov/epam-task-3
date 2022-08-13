@@ -1,6 +1,6 @@
 package com.epam.api.aop;
 
-import com.epam.api.model.EndPointErrorResponse;
+import com.epam.api.model.response.EndPointErrorResponse;
 import com.epam.business.exception.EntityExistsException;
 import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.exception.EntityIsUsingException;

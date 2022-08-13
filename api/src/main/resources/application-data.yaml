@@ -8,6 +8,7 @@ spring:
     password: ${DEV_DB_PASSWORD}
     url: ${DEV_DB_URL}
 
+
   jpa:
     generate-ddl: true
     show-sql: true
@@ -17,6 +18,7 @@ spring:
         generate_statistics: true
         format_sql: true
         dialect: ${DEV_DB_DIALECT}
+        enable_lazy_load_no_trans: true
 
 logging:
   level:

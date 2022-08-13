@@ -1,12 +1,16 @@
-package com.epam.business.mapper.requestMapper;
+package com.epam.business.mapper.request;
 
+import com.epam.business.exception.EntityNameNotFoundException;
 import com.epam.business.mapper.config.ConfigMapper;
 import com.epam.business.mapper.config.DtoMapper;
 import com.epam.business.mapper.config.EntityMapper;
 import com.epam.business.model.request.CreateGiftCertificateRequest;
 import com.epam.domain.entity.certificate.GiftCertificate;
+import com.epam.domain.entity.user.UserDetails;
+import com.epam.domain.repository.UserDetailsRepository;
 import java.time.LocalDateTime;
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This interface inherits {@link EntityMapper} and sets to mapper parameters
@@ -26,7 +30,10 @@ import org.mapstruct.Mapper;
  * @see CreateGiftCertificateRequest
  */
 @Mapper(config = ConfigMapper.class)
-public interface CreateGiftCertificateMapper extends EntityMapper<GiftCertificate, CreateGiftCertificateRequest> {
+public abstract class CreateGiftCertificateMapper implements EntityMapper<GiftCertificate, CreateGiftCertificateRequest> {
+
+    @Autowired
+    protected UserDetailsRepository userDetailsRepository;
 
     /**
      * This method is using internally by mapper, to convert duration in days to instance of {@link LocalDateTime}
@@ -34,7 +41,11 @@ public interface CreateGiftCertificateMapper extends EntityMapper<GiftCertificat
      * @param duration
      * @return specified date from current time plus days passed as argument
      */
-    default LocalDateTime toLocalDateTime(Long duration) {
+    protected LocalDateTime toLocalDateTime(Long duration) {
         return LocalDateTime.now().plusDays(duration);
+    }
+
+    protected UserDetails toUserDetails(String createdBy) {
+        return userDetailsRepository.findById(createdBy).orElseThrow(EntityNameNotFoundException::new);
     }
 }

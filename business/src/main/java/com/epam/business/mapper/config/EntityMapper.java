@@ -1,5 +1,6 @@
 package com.epam.business.mapper.config;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,9 +22,9 @@ public interface EntityMapper<T, S> {
     /**
      * This method maps passed as argument {@link Set} of dtos to {@link Set} of entities.
      *
-     * @param dtoSet must not be null
+     * @param dtoList must not be null
      * @return mapped {@link Set} of entities
      */
-    Set<T> toEntitySet(Set<S> dtoSet);
+    List<T> toEntityList(List<S> dtoList);
 
 }

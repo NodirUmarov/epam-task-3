@@ -3,9 +3,9 @@ package com.epam.business.service;
 import com.epam.business.exception.EntityExistsException;
 import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.exception.EntityNameNotFoundException;
-import com.epam.business.mapper.dtoMapper.GiftCertificateMapper;
-import com.epam.business.mapper.requestMapper.CreateGiftCertificateMapper;
-import com.epam.business.mapper.requestMapper.UpdateGiftCertificateMapper;
+import com.epam.business.mapper.dto.GiftCertificateMapper;
+import com.epam.business.mapper.request.CreateGiftCertificateMapper;
+import com.epam.business.mapper.request.UpdateGiftCertificateMapper;
 import com.epam.business.model.dto.GiftCertificateDto;
 import com.epam.business.model.enums.GiftCertificateSortBy;
 import com.epam.business.model.enums.SortType;
@@ -14,6 +14,7 @@ import com.epam.business.model.request.TagRequest;
 import com.epam.business.model.request.UpdateGiftCertificateRequest;
 import com.epam.domain.entity.certificate.GiftCertificate;
 import com.epam.domain.repository.GiftCertificateRepository;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -93,16 +94,16 @@ public interface GiftCertificateService {
      * in requested quantity and from requested position
      * @since 0.1.0
      */
-    Set<GiftCertificateDto> getByTag(String tag, Integer quantity, Integer page, SortType sortType, GiftCertificateSortBy sortBy);
+    List<GiftCertificateDto> getByTag(String tag, Integer quantity, Integer page, SortType sortType, GiftCertificateSortBy sortBy);
 
         /**
          * <p>Deletes certificate by given id</p>
          *
-         * @param id must not be null
-         * @throws EntityIdNotFoundException if nothing found by provided ID
+         * @param name must not be null
+         * @throws EntityNameNotFoundException if nothing found by provided name
          * @since 0.1.0
          */
-    void deleteById(Long id) throws EntityIdNotFoundException;
+    void deleteByName(String name) throws EntityNameNotFoundException;
 
     /**
      * <p>Updates certificate by given id. It affects only changed fields</p>
@@ -123,4 +124,6 @@ public interface GiftCertificateService {
      * @since 0.1.0
      */
     GiftCertificateDto changeSetOfTags(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException;
+
+    List<GiftCertificateDto> findAllByNames(List<String> giftCertificatesNames);
 }

@@ -1,4 +1,4 @@
-package com.epam.business.mapper.requestMapper;
+package com.epam.business.mapper.request;
 
 import com.epam.business.mapper.config.ConfigMapper;
 import com.epam.business.mapper.config.DtoMapper;
@@ -26,4 +26,5 @@ import org.mapstruct.Mapper;
  */
 @Mapper(config = ConfigMapper.class)
 public interface CreateTagMapper extends EntityMapper<Tag, TagRequest> {
+
 }

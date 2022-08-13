@@ -3,29 +3,34 @@ package com.epam.domain.entity.config;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.util.ProxyUtils;
 
 /**
  * Abstract base class for entities. Allows parameterization of id type, chooses auto-generation and implements
  * {@link #equals(Object)} and {@link #hashCode()} based on that id.
  *
- * @param <ID> the type of the identifier.
+ * @param <T> the type of the identifier.
  *
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
  */
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseEntity<ID extends Serializable> {
+@NoArgsConstructor
+public abstract class BaseEntity<T extends Serializable> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", updatable = false, unique = true, nullable = false)
-    private ID id;
+    private T id;
 
     @Override
     public boolean equals(Object obj) {

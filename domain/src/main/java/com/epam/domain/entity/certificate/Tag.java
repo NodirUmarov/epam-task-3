@@ -1,13 +1,17 @@
 package com.epam.domain.entity.certificate;
 
 import com.epam.domain.entity.config.BaseEntity;
-import javax.persistence.Table;
-import lombok.*;
-import org.hibernate.Hibernate;
-
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.util.Objects;
+import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/20/2022
@@ -15,9 +19,11 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_tags")
+@Audited
+@ToString
+@AuditTable(value = "tb_tags_aud", schema = "audit_schema")
+@Table(name = "tb_tags", schema = "gift_certificates_schema")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Tag extends BaseEntity<Long> {
 
     @Column(name = "tag_name", nullable = false, length = 100, updatable = false, unique = true)
@@ -35,4 +41,5 @@ public class Tag extends BaseEntity<Long> {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

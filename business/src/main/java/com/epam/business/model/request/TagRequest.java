@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 public class TagRequest {
 
     @ApiModelProperty(value = "The unique name of the tag",
-            name = "name",
+            name = "tagName",
             required = true)
-    private String name;
+    private String tagName;
 
 
 }

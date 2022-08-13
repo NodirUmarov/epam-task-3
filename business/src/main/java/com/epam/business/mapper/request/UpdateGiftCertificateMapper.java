@@ -1,9 +1,8 @@
-package com.epam.business.mapper.requestMapper;
+package com.epam.business.mapper.request;
 
 import com.epam.business.mapper.config.ConfigMapper;
 import com.epam.business.mapper.config.DtoMapper;
 import com.epam.business.mapper.config.EntityMapper;
-import com.epam.business.model.request.CreateGiftCertificateRequest;
 import com.epam.business.model.request.UpdateGiftCertificateRequest;
 import com.epam.domain.entity.certificate.GiftCertificate;
 import java.time.LocalDateTime;

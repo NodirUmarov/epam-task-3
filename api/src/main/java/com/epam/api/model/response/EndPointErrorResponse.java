@@ -1,4 +1,4 @@
-package com.epam.api.model;
+package com.epam.api.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

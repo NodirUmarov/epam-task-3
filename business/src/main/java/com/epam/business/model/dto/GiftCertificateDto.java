@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,12 +39,11 @@ public class GiftCertificateDto implements Serializable {
             position = 3)
     private final BigDecimal price;
 
-
     @ApiModelProperty(value = "Tags that gift certificate has",
             name = "tags",
             required = true,
             position = 5)
-    private final Set<TagDto> tags;
+    private final List<TagDto> tags;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(value = "Duration of the gift certificate",
@@ -52,6 +51,12 @@ public class GiftCertificateDto implements Serializable {
             required = true,
             position = 4)
     private final LocalDateTime duration;
+
+    @ApiModelProperty(value = "Users to whom the certificate are gifted",
+            name = "giftToUser",
+            required = true,
+            position = 4)
+    private final List<UserDetailsDto> giftToUser;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(value = "Date of gift certificate's creation",
@@ -64,5 +69,9 @@ public class GiftCertificateDto implements Serializable {
     @ApiModelProperty(value = "Date of gift certificate's creation",
             name = "lastUpdateDate",
             position = 7)
-    private final LocalDateTime lastUpdateDate;
+    private final LocalDateTime lastModifiedDate;
+
+    private final UserDetailsDto createdBy;
+
+    private final UserDetailsDto lastModifiedBy;
 }

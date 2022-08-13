@@ -3,7 +3,7 @@ package com.epam.business.model.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateGiftCertificateRequest {
 
-    @ApiModelProperty(value = "The unique name of the gift certificate",
-            name = "name",
+    @ApiModelProperty(value = "The email of the user who creates certificate",
+            name = "createdBy",
             required = true)
-    private String name;
+    private String createdBy;
 
+    @ApiModelProperty(value = "The unique name of the gift certificate",
+            name = "certificateName",
+            required = true)
+    private String certificateName;
 
     @ApiModelProperty(value = "The price of the gift certificate",
             name = "price",
@@ -43,5 +47,5 @@ public class CreateGiftCertificateRequest {
     @ApiModelProperty(value = "Names of tags that gift certificate has",
             name = "tags",
             position = 4)
-    private Set<TagRequest> tags;
+    private List<TagRequest> tags;
 }

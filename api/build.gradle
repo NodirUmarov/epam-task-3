@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation project(":business")
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    implementation "io.springfox:springfox-swagger-ui:$swaggerUIVersion"
-    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
+    implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
+    implementation "org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion"
+
 }
