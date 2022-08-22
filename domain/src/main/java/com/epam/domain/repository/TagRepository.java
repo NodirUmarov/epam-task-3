@@ -17,7 +17,6 @@ public interface TagRepository extends JpaRepository<Tag, Long>,
 
     Optional<Tag> findByTagName(String name);
 
-
     @Query("SELECT entity " +
             "FROM Tag as entity " +
             "JOIN GiftCertificate as g ON entity in elements(g.tags) " +

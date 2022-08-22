@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,7 +25,6 @@ import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 
 @EnableWebMvc
 @Configuration
-@PropertySource("classpath:swagger.properties")
 public class SwaggerConfig implements WebMvcConfigurer {
 
     @Value("${application-name}")

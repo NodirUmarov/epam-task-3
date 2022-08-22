@@ -2,6 +2,7 @@ package com.epam.business.mapper.config;
 
 import java.util.List;
 import java.util.Set;
+import org.mapstruct.Named;
 
 /**
  * The interface that defines basic methods for mapping entity to dto. Object types are generic and
@@ -17,6 +18,7 @@ public interface DtoMapper<T, S> {
      * @param entity must not be null
      * @return mapped dto
      */
+    @Named("toDto")
     S toDto(T entity);
 
     /**
@@ -25,5 +27,6 @@ public interface DtoMapper<T, S> {
      * @param entityList must not be null
      * @return mapped {@link Set} of dtos
      */
+    @Named("toDtoList")
     List<S> toDtoList(List<T> entityList);
 }

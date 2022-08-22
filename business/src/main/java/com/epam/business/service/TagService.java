@@ -65,5 +65,5 @@ public interface TagService {
      */
     void deleteById(Long id) throws EntityIdNotFoundException;
 
-    List<TagDto> getMostUsed(Integer quantity, Integer page);
+    List<TagDto> getMostUsed(Integer quantity);
 }

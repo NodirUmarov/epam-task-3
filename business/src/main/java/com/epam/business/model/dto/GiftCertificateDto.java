@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 
 @Data
-@Builder
 @ApiModel
 public class GiftCertificateDto implements Serializable {
 
@@ -39,6 +39,12 @@ public class GiftCertificateDto implements Serializable {
             position = 3)
     private final BigDecimal price;
 
+    @ApiModelProperty(value = "Users to whom certificate was gifted",
+            name = "giftToUsers",
+            required = true,
+            position = 5)
+    private final List<UserDetailsDto> giftToUsers;
+
     @ApiModelProperty(value = "Tags that gift certificate has",
             name = "tags",
             required = true,
@@ -51,12 +57,6 @@ public class GiftCertificateDto implements Serializable {
             required = true,
             position = 4)
     private final LocalDateTime duration;
-
-    @ApiModelProperty(value = "Users to whom the certificate are gifted",
-            name = "giftToUser",
-            required = true,
-            position = 4)
-    private final List<UserDetailsDto> giftToUser;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ApiModelProperty(value = "Date of gift certificate's creation",

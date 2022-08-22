@@ -28,10 +28,6 @@ public class OrderAssembler extends RepresentationModelAssemblerSupport<OrderDto
         this.giftCertificatesAssembler = giftCertificatesAssembler;
     }
 
-    public List<OrderResource> toModelList(List<OrderDto> orderDtos) {
-        return orderDtos.stream().map(this::toModel).collect(Collectors.toList());
-    }
-
     @Override
     public OrderResource toModel(OrderDto entity) {
         OrderResource orderResource = createModelWithId(entity.getId(), entity);

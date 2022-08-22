@@ -1,6 +1,21 @@
 plugins {
     id 'com.epam.library-conventions'
     id 'com.epam.base-dependencies-conventions'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+}
+
+ext {
+    set('springCloudVersion', "2021.0.3")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
@@ -18,8 +33,5 @@ dependencies {
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     compileOnly "org.mapstruct:mapstruct-processor:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
-}
-
-dependencies {
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.3'
 }

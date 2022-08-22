@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class GiftCertificatesAssembler extends RepresentationModelAssemblerSupport<GiftCertificateDto, GiftCertificateResource> {
-
     private final TagAssembler tagAssembler;
     private final UserDetailsAssembler userDetailsAssembler;
 
@@ -31,10 +31,6 @@ public class GiftCertificatesAssembler extends RepresentationModelAssemblerSuppo
         super(GiftCertificateController.class, GiftCertificateResource.class);
         this.tagAssembler = tagAssembler;
         this.userDetailsAssembler = userDetailsAssembler;
-    }
-
-    public List<GiftCertificateResource> toModelList(List<GiftCertificateDto> giftCertificateDtos) {
-        return giftCertificateDtos.stream().map(this::toModel).collect(Collectors.toList());
     }
 
     @Override
@@ -55,13 +51,8 @@ public class GiftCertificatesAssembler extends RepresentationModelAssemblerSuppo
         resource.setId(entity.getId());
         resource.setCertificateName(entity.getCertificateName());
         resource.setCreateDate(entity.getCreateDate());
-        resource.setCreatedBy(userDetailsAssembler.toModel(entity.getCreatedBy()));
         resource.setDescription(entity.getDescription());
         resource.setDuration(entity.getDuration());
-        if (entity.getGiftToUser() != null) {
-            resource.setGiftToUser(entity.getGiftToUser().stream().map(userDetailsAssembler::toModel).collect(Collectors.toList()));
-        }
-        resource.setLastModifiedBy(userDetailsAssembler.toModel(entity.getLastModifiedBy()));
         resource.setLastUpdateDate(entity.getLastModifiedDate());
         resource.setPrice(entity.getPrice());
         resource.setTags(entity.getTags().stream().map(tagAssembler::toModel).collect(Collectors.toSet()));

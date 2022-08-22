@@ -51,9 +51,11 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(totalPrice)
                 .build();
 
-        Order order = orderRepository.save(orderMapper.toEntity(orderDto));
         log.info("Order successfully made");
-        return orderMapper.toDto(order);
+
+        Order order = orderMapper.toEntity(orderDto);
+
+        return orderMapper.toDto(orderRepository.save(order));
     }
 
     @Override

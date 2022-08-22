@@ -35,8 +35,10 @@ public class UserDetailsAssembler extends RepresentationModelAssemblerSupport<Us
         userDetailsResource.setDob(entity.getDob());
         userDetailsResource.setFullName(entity.getFullName());
         userDetailsResource.setPhoneNumber(entity.getPhoneNumber());
-        userDetailsResource.setGiftCertificates(entity.getGiftCertificates().stream()
-                .map(giftCertificatesAssembler::toModel).collect(Collectors.toSet()));
+        if (userDetailsResource.getGiftCertificates() != null) {
+            userDetailsResource.setGiftCertificates(entity.getGiftCertificates().stream()
+                    .map(giftCertificatesAssembler::toModel).collect(Collectors.toSet()));
+        }
         userDetailsResource.setSendEmail(entity.getSendEmail());
         return userDetailsResource;
     }

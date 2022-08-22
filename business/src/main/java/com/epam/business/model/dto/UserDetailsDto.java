@@ -12,7 +12,6 @@ import lombok.Data;
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/29/2022
  */
 @Data
-@Builder
 @ApiModel
 public class UserDetailsDto implements Serializable {
 

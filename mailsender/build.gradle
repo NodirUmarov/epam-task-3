@@ -1,0 +1,18 @@
+plugins {
+    id 'com.epam.application-conventions'
+    id 'com.epam.base-dependencies-conventions'
+}
+
+group 'com.epam'
+version '0.1.0'
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}"
+    implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernateValidator}"
+    implementation "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateValidator}"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+
+}

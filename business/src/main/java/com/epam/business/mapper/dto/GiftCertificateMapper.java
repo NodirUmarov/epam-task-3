@@ -2,11 +2,17 @@ package com.epam.business.mapper.dto;
 
 import com.epam.business.mapper.config.ConfigMapper;
 import com.epam.business.mapper.config.DtoMapper;
+import com.epam.business.mapper.config.DtoNestedObjectMapper;
 import com.epam.business.mapper.config.EntityMapper;
+import com.epam.business.mapper.config.EntityNestedObjectMapper;
 import com.epam.business.model.dto.GiftCertificateDto;
+import com.epam.business.model.dto.UserDetailsDto;
 import com.epam.domain.entity.certificate.GiftCertificate;
+import com.epam.domain.entity.user.UserDetails;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * This interface inherits {@link EntityMapper} and {@link DtoMapper}, and sets to mapper parameters
@@ -25,17 +31,31 @@ import org.mapstruct.Mapping;
  * @see GiftCertificate
  * @see GiftCertificateDto
  */
-@Mapper(config = ConfigMapper.class)
+@Named("GiftCertificateMapper")
+@Mapper(config = ConfigMapper.class, uses = {UserDetailsMapper.class})
 public interface GiftCertificateMapper extends EntityMapper<GiftCertificate, GiftCertificateDto>,
-        DtoMapper<GiftCertificate, GiftCertificateDto> {
+        DtoMapper<GiftCertificate, GiftCertificateDto>, DtoNestedObjectMapper<GiftCertificate, GiftCertificateDto>, EntityNestedObjectMapper<GiftCertificate, GiftCertificateDto> {
 
     @Override
-    @Mapping(target = "createdBy.id", source = "createdBy.username")
-    @Mapping(target = "lastModifiedBy.id", source = "lastModifiedBy.username")
-    GiftCertificate toEntity(GiftCertificateDto dto);
-
-    @Override
-    @Mapping(target = "createdBy.username", source = "createdBy.id")
-    @Mapping(target = "lastModifiedBy.username", source = "lastModifiedBy.id")
+    @Named("toDto")
+    @Mapping(target = "createdBy", qualifiedByName = {"UserDetailsMapper", "toDtoWithoutSomeChild"})
+    @Mapping(target = "lastModifiedBy", qualifiedByName = {"UserDetailsMapper", "toDtoWithoutSomeChild"})
+    @Mapping(target = "giftToUsers", qualifiedByName = {"UserDetailsMapper", "toDtoListWithoutSomeChild"})
     GiftCertificateDto toDto(GiftCertificate entity);
+
+    @Override
+    @Named("toDtoWithoutSomeChild")
+    GiftCertificateDto toDtoWithoutSomeChild(GiftCertificate object);
+
+    @Override
+    @Named("toDtoListWithoutSomeChild")
+    List<GiftCertificateDto> toDtoListWithoutSomeChild(List<GiftCertificate> objects);
+
+    @Override
+    @Named("toEntityWithoutSomeChild")
+    GiftCertificate toEntityWithoutSomeChild(GiftCertificateDto object);
+
+    @Override
+    @Named("toEntityListWithoutSomeChild")
+    List<GiftCertificate> toEntityListWithoutSomeChild(List<GiftCertificateDto> objects);
 }

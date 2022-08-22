@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 @ApiModel
 public class TagDto implements Serializable {
 

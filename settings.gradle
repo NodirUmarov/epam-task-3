@@ -1,2 +1,4 @@
 rootProject.name = 'epam-task-3'
 include('api', 'business', 'domain')
+include 'mailsender'
+

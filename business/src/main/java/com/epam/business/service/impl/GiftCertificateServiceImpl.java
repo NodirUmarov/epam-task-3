@@ -1,5 +1,6 @@
 package com.epam.business.service.impl;
 
+import com.epam.business.client.MailSenderClient;
 import com.epam.business.exception.EntityExistsException;
 import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.exception.EntityNameNotFoundException;
@@ -13,6 +14,7 @@ import com.epam.business.model.dto.TagDto;
 import com.epam.business.model.enums.GiftCertificateSortBy;
 import com.epam.business.model.enums.SortType;
 import com.epam.business.model.request.CreateGiftCertificateRequest;
+import com.epam.business.model.request.SendMailClientRequest;
 import com.epam.business.model.request.TagRequest;
 import com.epam.business.model.request.UpdateGiftCertificateRequest;
 import com.epam.business.service.GiftCertificateService;
@@ -22,14 +24,17 @@ import com.epam.business.service.utils.BeanCopyUtils;
 import com.epam.domain.entity.certificate.GiftCertificate;
 import com.epam.domain.entity.user.UserDetails;
 import com.epam.domain.repository.GiftCertificateRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +55,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final UserDetailsMapper userDetailsMapper;
     private final TagMapper tagMapper;
     private final TagService tagService;
+    private final MailSenderClient mailSenderClient;
 
     @Override
     public GiftCertificateDto create(CreateGiftCertificateRequest request) throws EntityExistsException {
@@ -64,7 +70,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
 
         List<TagDto> savedTags = tagService.create(request.getTags());
-
 
         toSave.setCreatedBy(createdBy);
         toSave.setTags(tagMapper.toEntityList(savedTags));
@@ -106,7 +111,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         Sort sort = Sort.by(sortType.getDirection(), giftCertificateSortBy.getAttributeName());
 
-
         Pageable pageable = PageRequest.of(page, quantity, sort);
 
         Page<GiftCertificate> certificatePage = giftCertificateRepository.findByTags_TagName(tag, pageable);
@@ -145,8 +149,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         BeanCopyUtils.copyNonNullProperties(updateSource, updateTarget);
 
         setLastModifiedBy(request.getUpdatedBy(), updateTarget);
-        GiftCertificate giftCertificate = giftCertificateRepository.save(updateTarget);
 
+        GiftCertificate giftCertificate;
+
+        try {
+            giftCertificate = giftCertificateRepository.save(updateTarget);
+        } catch (ConstraintViolationException exception) {
+            throw new EntityExistsException();
+        }
         log.info("Gift-Certificate updated");
         return giftCertificateMapper.toDto(giftCertificate);
     }
@@ -167,6 +177,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateMapper.toDtoList(giftCertificateRepository.findAllByCertificateName(giftCertificatesNames));
     }
 
+    @Scheduled(fixedDelay = 60000)
+    public void checkToUpdateCertificatesDuration() {
+        log.info("Updating gift-certificates expiration status...");
+
+        giftCertificateRepository.updateExpirationStatus().forEach(user ->
+                sendMessage(SendMailClientRequest.builder().receiver(user)
+                        .subject("Expired Gift-Certificate")
+                        .text("One or more gift-certificates has expired. Check your account for details")
+                        .build()));
+        log.info("Gift-certificates expiration statuses have changed and have been reported via mail to users.");
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 9 13 * * *")
+    public void checkToRemoveCertificateDuration() {
+        log.info("Task remove");
+        List<GiftCertificate> giftCertificatesExpired = giftCertificateRepository
+                .findAllByDurationBefore(LocalDateTime.now());
+
+        List<GiftCertificate> giftCertificatesAboutToExpire = giftCertificateRepository
+                .findAllByDurationBefore(LocalDateTime.now().plusDays(1));
+    }
+
     private void setLastModifiedBy(String username, GiftCertificate giftCertificate) {
         UserDetails details = userDetailsMapper.toEntity(userDetailsService.getUserDetailsDtoByUsername(username));
 
@@ -174,4 +207,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         log.info("{} object set to certificate {}", details, giftCertificate);
     }
 
+    private void sendMessage(SendMailClientRequest request) {
+        try {
+            mailSenderClient.sendMail(request);
+        } catch (Exception e) {
+            log.error("Message has not been sent");
+            e.printStackTrace();
+        }
+    }
 }

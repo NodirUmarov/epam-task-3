@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,6 +47,9 @@ public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
 
     @Column(nullable = false)
     private LocalDateTime duration;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isExpired;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_has_gift_certificate", schema = "gift_certificates_schema",

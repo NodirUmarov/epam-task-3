@@ -23,14 +23,13 @@ import org.springframework.hateoas.RepresentationModel;
 public class GiftCertificateResource extends RepresentationModel<GiftCertificateResource> {
 
     @JsonCreator
-    public GiftCertificateResource(Long id, String certificateName, String description, BigDecimal price, Set<TagResource> tags, LocalDateTime duration, List<UserDetailsResource> giftToUser, LocalDateTime createDate, LocalDateTime lastUpdateDate, UserDetailsResource createdBy, UserDetailsResource lastModifiedBy) {
+    public GiftCertificateResource(Long id, String certificateName, String description, BigDecimal price, Set<TagResource> tags, LocalDateTime duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, UserDetailsResource createdBy, UserDetailsResource lastModifiedBy) {
         this.id = id;
         this.certificateName = certificateName;
         this.description = description;
         this.price = price;
         this.tags = tags;
         this.duration = duration;
-        this.giftToUser = giftToUser;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
         this.createdBy = createdBy;
@@ -79,13 +78,6 @@ public class GiftCertificateResource extends RepresentationModel<GiftCertificate
             required = true,
             position = 4)
     private LocalDateTime duration;
-
-    @JsonProperty
-    @ApiModelProperty(value = "Users to whom the certificate are gifted",
-            name = "giftToUser",
-            required = true,
-            position = 4)
-    private List<UserDetailsResource> giftToUser;
 
     @JsonProperty
     @JsonFormat(shape = JsonFormat.Shape.STRING)

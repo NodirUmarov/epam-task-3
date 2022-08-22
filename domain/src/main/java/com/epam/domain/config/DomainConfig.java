@@ -14,4 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.epam.domain")
 @EnableJpaAuditing
 public class DomainConfig {
+
+
+
 }

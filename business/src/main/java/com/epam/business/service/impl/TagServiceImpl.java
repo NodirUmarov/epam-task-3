@@ -60,8 +60,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> getMostUsed(Integer quantity, Integer page) {
-        Pageable pageable = PageRequest.of(page, quantity);
+    public List<TagDto> getMostUsed(Integer quantity) {
+        Pageable pageable = PageRequest.of(0, quantity);
         return tagMapper.toDtoList(tagRepository.findMostUsed(pageable).toList());
     }
 }
