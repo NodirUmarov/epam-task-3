@@ -6,15 +6,10 @@ import org.springframework.data.envers.repository.support.EnversRevisionReposito
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-/**
- * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 7/27/2022
- */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.epam.domain", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @EntityScan(basePackages = "com.epam.domain")
 @EnableJpaAuditing
 public class DomainConfig {
-
-
 
 }

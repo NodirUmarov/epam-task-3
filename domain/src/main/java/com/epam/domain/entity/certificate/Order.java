@@ -29,8 +29,8 @@ import org.hibernate.envers.Audited;
 @Setter
 @Audited
 @ToString
-@AuditTable(value = "tb_orders_aud", schema = "audit_schema")
-@Table(name = "tb_orders", schema = "gift_certificates_schema")
+@AuditTable(value = "tb_orders_aud")
+@Table(name = "tb_orders")
 @NoArgsConstructor
 public class Order extends BaseAuditableEntity<UserDetails, Long> {
 
@@ -38,8 +38,7 @@ public class Order extends BaseAuditableEntity<UserDetails, Long> {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_has_gift_certificate",
             joinColumns = @JoinColumn(name = "order_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "gift_certificate_ID", referencedColumnName = "ID"),
-            schema = "gift_certificates_schema")
+            inverseJoinColumns = @JoinColumn(name = "gift_certificate_ID", referencedColumnName = "ID"))
     private List<GiftCertificate> orderedCertificates;
 
     @Column(name = "total_price", nullable = false, updatable = false)

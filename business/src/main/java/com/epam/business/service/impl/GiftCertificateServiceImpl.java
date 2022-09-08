@@ -38,10 +38,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-/**
- * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 6/30/2022
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -63,7 +59,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         GiftCertificate toSave = createGiftCertificateMapper.toEntity(request);
 
-        UserDetails createdBy = userDetailsMapper.toEntity(userDetailsService.getUserDetailsDtoByUsername(request.getCreatedBy()));
+        UserDetails createdBy = userDetailsMapper.toEntity(userDetailsService
+                .getUserDetailsDtoByUsername(request.getCreatedBy()));
 
         if (giftCertificateRepository.existsByCertificateName(request.getCertificateName())) {
             throw new EntityExistsException();
@@ -112,11 +109,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         Sort sort = Sort.by(sortType.getDirection(), giftCertificateSortBy.getAttributeName());
 
         Pageable pageable = PageRequest.of(page, quantity, sort);
-
         Page<GiftCertificate> certificatePage = giftCertificateRepository.findByTags_TagName(tag, pageable);
 
         List<GiftCertificate> giftCertificates = certificatePage.toList();
-
         List<GiftCertificateDto> giftCertificateDtos = giftCertificateMapper.toDtoList(giftCertificates);
 
         log.info("{} object{} found in database", giftCertificateDtos.size(), giftCertificateDtos.size() > 1 ? "s" : "");

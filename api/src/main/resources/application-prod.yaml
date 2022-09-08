@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${PROD_DB_DRIVER}
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
+    url: ${PROD_DB_URL}
+  messages:
+    basename: lang
+    use-code-as-default-message: true
+    encoding: UTF-8
+
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    properties:
+      ddl-auto: create
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        dialect: ${PROD_DB_DIALECT}
+        enable_lazy_load_no_trans: true
+
+app:
+  scheduling:
+    enable: false
+
+application:
+  default-locale: en_US
+
+application-name: ESM application
+title: ESM application APIs
+version: 0.1.0
+description: APIs description
+base-package: com.epam.api.controller
+contact-name: Nodir Umarov
+contact-email: mr.umarov.1995@gmail.com
+git-url: https://github.com/NodirUmarov/epam-task-3/tree/main
+
+logging:
+  level:
+    root: WARN
+    com:
+      epam: TRACE

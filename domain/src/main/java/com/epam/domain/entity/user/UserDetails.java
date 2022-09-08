@@ -32,8 +32,8 @@ import org.hibernate.envers.Audited;
 @Setter
 @Audited
 @ToString(callSuper = true)
-@AuditTable(value = "tb_user_details_aud", schema = "audit_schema")
-@Table(name = "tb_user_details", schema = "gift_certificates_schema")
+@AuditTable(value = "tb_user_details_aud")
+@Table(name = "tb_user_details")
 @NoArgsConstructor
 public class UserDetails {
 
@@ -41,7 +41,7 @@ public class UserDetails {
     @Column(name = "ID", updatable = false, unique = true, nullable = false)
     private String id;
 
-    @Column(length = 100, unique = true)
+    @Column(length = 100)
     private String phoneNumber;
 
     @Column(length = 100)
@@ -60,7 +60,7 @@ public class UserDetails {
     private Boolean sendEmail;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_has_gift_certificate", schema = "gift_certificates_schema",
+    @JoinTable(name = "user_has_gift_certificate",
             joinColumns = @JoinColumn(name = "user_details_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "certificate_ID", referencedColumnName = "ID"))
     @Exclude

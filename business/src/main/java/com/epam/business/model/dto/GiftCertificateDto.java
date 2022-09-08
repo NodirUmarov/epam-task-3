@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 
 @Data
 @ApiModel
+@Builder
 public class GiftCertificateDto implements Serializable {
 
     @ApiModelProperty(value = "The generated ID when saved in database",
@@ -38,12 +39,6 @@ public class GiftCertificateDto implements Serializable {
             allowableValues = "[0, infinity]",
             position = 3)
     private final BigDecimal price;
-
-    @ApiModelProperty(value = "Users to whom certificate was gifted",
-            name = "giftToUsers",
-            required = true,
-            position = 5)
-    private final List<UserDetailsDto> giftToUsers;
 
     @ApiModelProperty(value = "Tags that gift certificate has",
             name = "tags",
@@ -71,7 +66,4 @@ public class GiftCertificateDto implements Serializable {
             position = 7)
     private final LocalDateTime lastModifiedDate;
 
-    private final UserDetailsDto createdBy;
-
-    private final UserDetailsDto lastModifiedBy;
 }

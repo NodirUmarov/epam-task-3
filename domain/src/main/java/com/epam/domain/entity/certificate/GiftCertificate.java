@@ -31,8 +31,8 @@ import org.hibernate.envers.Audited;
 @Setter
 @Audited
 @ToString
-@AuditTable(value = "tb_gift_certificates_aud", schema = "audit_schema")
-@Table(name = "tb_gift_certificates", schema = "gift_certificates_schema")
+@AuditTable(value = "tb_gift_certificates_aud")
+@Table(name = "tb_gift_certificates")
 @NoArgsConstructor
 public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
 
@@ -52,17 +52,9 @@ public class GiftCertificate extends BaseAuditableEntity<UserDetails, Long> {
     private Boolean isExpired;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_has_gift_certificate", schema = "gift_certificates_schema",
-            joinColumns = @JoinColumn(name = "certificate_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "user_details_ID", referencedColumnName = "ID"))
-    @Exclude
-    List<UserDetails> giftToUsers;
-
-    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "gift_certificate_has_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "tag_ID", referencedColumnName = "ID"),
-            schema = "gift_certificates_schema")
+            inverseJoinColumns = @JoinColumn(name = "tag_ID", referencedColumnName = "ID"))
     @Exclude
     private List<Tag> tags;
 

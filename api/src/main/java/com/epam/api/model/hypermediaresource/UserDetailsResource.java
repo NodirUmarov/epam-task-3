@@ -1,7 +1,7 @@
 package com.epam.api.model.hypermediaresource;
 
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,7 +41,7 @@ public class UserDetailsResource extends RepresentationModel<UserDetailsResource
     @ApiModelProperty(name = "dob",
             required = true,
             position = 5)
-    private LocalDateTime dob;
+    private LocalDate dob;
 
     @ApiModelProperty(name = "fullName",
             required = true,

@@ -1,5 +1,6 @@
 package com.epam.business.service.impl;
 
+import com.epam.business.exception.EntityNameNotFoundException;
 import com.epam.business.mapper.dto.TagMapper;
 import com.epam.business.mapper.request.CreateTagMapper;
 import com.epam.business.model.dto.TagDto;
@@ -64,4 +65,5 @@ public class TagServiceImpl implements TagService {
         Pageable pageable = PageRequest.of(0, quantity);
         return tagMapper.toDtoList(tagRepository.findMostUsed(pageable).toList());
     }
+
 }

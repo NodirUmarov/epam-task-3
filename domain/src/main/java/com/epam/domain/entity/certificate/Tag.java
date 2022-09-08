@@ -21,8 +21,8 @@ import org.hibernate.envers.Audited;
 @Setter
 @Audited
 @ToString
-@AuditTable(value = "tb_tags_aud", schema = "audit_schema")
-@Table(name = "tb_tags", schema = "gift_certificates_schema")
+@AuditTable(value = "tb_tags_aud")
+@Table(name = "tb_tags")
 @NoArgsConstructor
 public class Tag extends BaseEntity<Long> {
 

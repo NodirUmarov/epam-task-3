@@ -4,6 +4,7 @@ import com.epam.business.mapper.config.ConfigMapper;
 import com.epam.business.mapper.config.EntityMapper;
 import com.epam.business.model.request.CreateUserDetailsRequest;
 import com.epam.domain.entity.user.UserDetails;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

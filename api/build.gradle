@@ -8,5 +8,5 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
     implementation "org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion"
-
+    testImplementation "com.h2database:h2:2.1.214"
 }

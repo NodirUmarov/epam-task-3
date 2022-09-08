@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,8 +14,9 @@ import lombok.Data;
  * @author <a href="https://github.com/NodirUmarov">Nodir Umarov</a> on 8/9/2022
  */
 @Data
-@Builder
 @ApiModel
+@AllArgsConstructor
+@Builder
 public class OrderDto implements Serializable {
 
     @ApiModelProperty(value = "The unique id of the order",

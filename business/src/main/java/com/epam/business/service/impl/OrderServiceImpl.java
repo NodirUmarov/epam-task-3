@@ -13,6 +13,7 @@ import com.epam.business.service.UserDetailsService;
 import com.epam.domain.entity.certificate.Order;
 import com.epam.domain.repository.OrderRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +46,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalPrice = giftCertificateDtos.stream().map(GiftCertificateDto::getPrice)
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 
-        OrderDto orderDto = OrderDto.builder().orderedCertificates(giftCertificateDtos)
-                .orderedBy(orderedByDto)
-                .lastModifiedBy(orderedByDto)
-                .totalPrice(totalPrice)
-                .build();
+        OrderDto orderDto = new OrderDto(null, orderedByDto, orderedByDto, null, null, giftCertificateDtos, totalPrice);
 
         log.info("Order successfully made");
 
@@ -70,6 +67,4 @@ public class OrderServiceImpl implements OrderService {
         log.info("{} orders found of user with username=\"{}\"", orders.size(), username);
         return orderMapper.toDtoList(orders);
     }
-
-
 }

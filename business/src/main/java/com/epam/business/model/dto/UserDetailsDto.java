@@ -3,8 +3,8 @@ package com.epam.business.model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +13,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
+@Builder
 public class UserDetailsDto implements Serializable {
 
     @ApiModelProperty(name = "username",
@@ -42,7 +43,7 @@ public class UserDetailsDto implements Serializable {
     @ApiModelProperty(name = "dob",
             required = true,
             position = 5)
-    private final LocalDateTime dob;
+    private final LocalDate dob;
 
     @ApiModelProperty(name = "fullName",
             required = true,
@@ -57,5 +58,5 @@ public class UserDetailsDto implements Serializable {
     @ApiModelProperty(name = "giftCertificates",
             required = true,
             position = 8)
-    private final Set<GiftCertificateDto> giftCertificates;
+    private final List<GiftCertificateDto> giftCertificates;
 }
