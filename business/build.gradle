@@ -1,0 +1,37 @@
+plugins {
+    id 'com.epam.library-conventions'
+    id 'com.epam.base-dependencies-conventions'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+}
+
+ext {
+    set('springCloudVersion', "2021.0.3")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    api project(":domain")
+
+    implementation "org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion"
+
+    implementation 'org.springframework:spring-aop:2.5.6'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+    testImplementation "org.assertj:assertj-core:3.23.1"
+
+    implementation "io.springfox:springfox-boot-starter:$swaggerVersion"
+    implementation "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    compileOnly "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.3'
+}
