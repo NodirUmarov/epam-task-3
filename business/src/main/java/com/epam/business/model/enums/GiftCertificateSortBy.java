@@ -10,7 +10,7 @@ public enum GiftCertificateSortBy {
     PRICE("price"),
     DURATION("duration"),
     CREATED("createDate"),
-    UPDATED("lastUpdateDate");
+    UPDATED("lastModifiedDate");
 
     private final String attribute;
 

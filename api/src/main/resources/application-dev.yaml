@@ -42,6 +42,11 @@ contact-name: Nodir Umarov
 contact-email: mr.umarov.1995@gmail.com
 git-url: https://github.com/NodirUmarov/epam-task-3/tree/main
 
+tags: ${TAGS}
+users: ${USERS}
+giftCertificates: ${GIFT_CERTIFICATES}
+
+
 logging:
   level:
     root: WARN

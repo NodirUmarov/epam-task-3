@@ -14,7 +14,7 @@ import com.epam.business.model.request.UpdateGiftCertificateRequest;
 import com.epam.business.service.GiftCertificateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.Set;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -107,7 +107,7 @@ public class GiftCertificateController {
             log.error("Updating failed, Gift-certificate by id={} not found", id);
             return apiErrorModelBuilder.buildResponseEntity(MessageCode.CERTIFICATE_NOT_FOUND, HttpStatus.NOT_FOUND);
         } catch (EntityExistsException exception) {
-            log.error("Updating failed, Gift-certificate with name=\"{}\" already exists", request.getGiftCertificateName());
+            log.error("Updating failed, Gift-certificate with name=\"{}\" already exists", request.getCertificateName());
             return apiErrorModelBuilder.buildResponseEntity(MessageCode.CERTIFICATE_NAME_INVALID, HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -116,10 +116,10 @@ public class GiftCertificateController {
     @ApiOperation(value = "Add tag",
             notes = "This method adds given tags to gift-certificate.")
     public ResponseEntity<?> addTagsToCertificate(@PathVariable Long id,
-                                                  @RequestBody @Validated Set<TagRequest> tags) {
+                                                  @RequestBody @Validated List<TagRequest> tags) {
         try {
             log.info("Adding tags to Gift-certificate with id={}", id);
-            return ResponseEntity.ok(giftCertificatesAssembler.toModel(giftCertificateService.changeSetOfTags(id, tags)));
+            return ResponseEntity.ok(giftCertificatesAssembler.toModel(giftCertificateService.addTagsToCertificate(id, tags)));
         } catch (EntityIdNotFoundException exception) {
             log.error("Gift-certificate not found by id={}", id);
             return apiErrorModelBuilder.buildResponseEntity(MessageCode.CERTIFICATE_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -130,10 +130,10 @@ public class GiftCertificateController {
     @ApiOperation(value = " tag",
             notes = "This method adds given tags to gift-certificate.")
     public ResponseEntity<?> untagCertificate(@PathVariable Long id,
-                                              @RequestBody @Validated Set<TagRequest> tags) {
+                                              @RequestBody @Validated List<TagRequest> tags) {
         try {
             log.info("Removing tags from Gift-certificate with id={}", id);
-            return ResponseEntity.ok(giftCertificatesAssembler.toModel(giftCertificateService.changeSetOfTags(id, tags)));
+            return ResponseEntity.ok(giftCertificatesAssembler.toModel(giftCertificateService.removeTagsFromCertificate(id, tags)));
         } catch (EntityIdNotFoundException exception) {
             log.error("Gift-certificate not found by id={}", id);
             return apiErrorModelBuilder.buildResponseEntity(MessageCode.CERTIFICATE_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -142,7 +142,7 @@ public class GiftCertificateController {
 
     @DeleteMapping
     @ApiOperation(value = "Delete by gift-certificate name", notes = "This method deletes gift-certificate by its unique full name")
-    public ResponseEntity<?> deleteById(@RequestParam("name") String giftCertificateName) {
+    public ResponseEntity<?> deleteByName(@RequestParam("name") String giftCertificateName) {
         try {
             log.info("Deleting Gift-certificate by name=\"{}\"", giftCertificateName);
             giftCertificateService.deleteByName(giftCertificateName);

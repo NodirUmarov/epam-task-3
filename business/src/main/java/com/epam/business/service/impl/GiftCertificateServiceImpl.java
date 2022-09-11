@@ -1,6 +1,5 @@
 package com.epam.business.service.impl;
 
-import com.epam.business.client.MailSenderClient;
 import com.epam.business.exception.EntityExistsException;
 import com.epam.business.exception.EntityIdNotFoundException;
 import com.epam.business.exception.EntityNameNotFoundException;
@@ -24,7 +23,6 @@ import com.epam.business.service.utils.BeanCopyUtils;
 import com.epam.domain.entity.certificate.GiftCertificate;
 import com.epam.domain.entity.user.UserDetails;
 import com.epam.domain.repository.GiftCertificateRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +49,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final UserDetailsMapper userDetailsMapper;
     private final TagMapper tagMapper;
     private final TagService tagService;
-    private final MailSenderClient mailSenderClient;
 
     @Override
     public GiftCertificateDto create(CreateGiftCertificateRequest request) throws EntityExistsException {
@@ -96,7 +93,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDto getByName(String name) throws EntityNameNotFoundException {
         log.info("Searching for Gift-Certificate by name=\"{}\"", name);
 
-        GiftCertificate giftCertificate = giftCertificateRepository.findByCertificateName(name).orElseThrow(EntityIdNotFoundException::new);
+        GiftCertificate giftCertificate = giftCertificateRepository.findByCertificateName(name).orElseThrow(EntityNameNotFoundException::new);
 
         log.info("Gift-Certificate by name=\"{}\" found in database", name);
         return giftCertificateMapper.toDto(giftCertificate);
@@ -137,6 +134,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDto updateById(Long id, UpdateGiftCertificateRequest request) throws EntityIdNotFoundException {
         log.info("Updating Gift-Certificate by id={}", id);
 
+        if (giftCertificateRepository.existsByCertificateName(request.getCertificateName())) {
+            throw new EntityExistsException();
+        }
+
         GiftCertificate updateTarget = giftCertificateRepository.findById(id).orElseThrow(EntityIdNotFoundException::new);
 
         GiftCertificate updateSource = updateGiftCertificateMapper.toEntity(request);
@@ -145,22 +146,36 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         setLastModifiedBy(request.getUpdatedBy(), updateTarget);
 
-        GiftCertificate giftCertificate;
+        GiftCertificate giftCertificate = giftCertificateRepository.save(updateTarget);
 
-        try {
-            giftCertificate = giftCertificateRepository.save(updateTarget);
-        } catch (ConstraintViolationException exception) {
-            throw new EntityExistsException();
-        }
         log.info("Gift-Certificate updated");
         return giftCertificateMapper.toDto(giftCertificate);
     }
 
     @Override
-    public GiftCertificateDto changeSetOfTags(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException {
+    public GiftCertificateDto addTagsToCertificate(Long id, List<TagRequest> tags) throws EntityIdNotFoundException {
         log.info("Changing the tags of gift-certificate with id={}", id);
 
         GiftCertificate giftCertificate = giftCertificateRepository.findById(id).orElseThrow(EntityIdNotFoundException::new);
+
+        List<TagDto> tagDtos = tagService.create(tags);
+        giftCertificate.getTags().addAll(tagMapper.toEntityList(tagDtos));
+
+        GiftCertificateDto dto = giftCertificateMapper.toDto(giftCertificateRepository.save(giftCertificate));
+
+        log.info("Gift-certificate's set of tags has changed");
+        return dto;
+    }
+
+    @Override
+    public GiftCertificateDto removeTagsFromCertificate(Long id, List<TagRequest> tags) throws EntityIdNotFoundException {
+        log.info("Changing the tags of gift-certificate with id={}", id);
+
+        GiftCertificate giftCertificate = giftCertificateRepository.findById(id).orElseThrow(EntityIdNotFoundException::new);
+
+        List<TagDto> tagDtos = tagService.create(tags);
+        giftCertificate.getTags().removeAll(tagMapper.toEntityList(tagDtos));
+
         GiftCertificateDto dto = giftCertificateMapper.toDto(giftCertificateRepository.save(giftCertificate));
 
         log.info("Gift-certificate's set of tags has changed");
@@ -172,42 +187,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateMapper.toDtoList(giftCertificateRepository.findAllByCertificateName(giftCertificatesNames));
     }
 
-    @Scheduled(fixedDelay = 60000)
-    public void checkToUpdateCertificatesDuration() {
-        log.info("Updating gift-certificates expiration status...");
-
-        giftCertificateRepository.updateExpirationStatus().forEach(user ->
-                sendMessage(SendMailClientRequest.builder().receiver(user)
-                        .subject("Expired Gift-Certificate")
-                        .text("One or more gift-certificates has expired. Check your account for details")
-                        .build()));
-        log.info("Gift-certificates expiration statuses have changed and have been reported via mail to users.");
-    }
-
-    @Transactional
-    @Scheduled(cron = "0 9 13 * * *")
-    public void checkToRemoveCertificateDuration() {
-        log.info("Task remove");
-        List<GiftCertificate> giftCertificatesExpired = giftCertificateRepository
-                .findAllByDurationBefore(LocalDateTime.now());
-
-        List<GiftCertificate> giftCertificatesAboutToExpire = giftCertificateRepository
-                .findAllByDurationBefore(LocalDateTime.now().plusDays(1));
-    }
-
     private void setLastModifiedBy(String username, GiftCertificate giftCertificate) {
         UserDetails details = userDetailsMapper.toEntity(userDetailsService.getUserDetailsDtoByUsername(username));
 
         giftCertificate.setLastModifiedBy(details);
         log.info("{} object set to certificate {}", details, giftCertificate);
-    }
-
-    private void sendMessage(SendMailClientRequest request) {
-        try {
-            mailSenderClient.sendMail(request);
-        } catch (Exception e) {
-            log.error("Message has not been sent");
-            e.printStackTrace();
-        }
     }
 }

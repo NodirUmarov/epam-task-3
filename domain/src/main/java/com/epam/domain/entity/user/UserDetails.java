@@ -59,7 +59,7 @@ public class UserDetails {
     @Column(name = "send_emails")
     private Boolean sendEmail;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_has_gift_certificate",
             joinColumns = @JoinColumn(name = "user_details_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "certificate_ID", referencedColumnName = "ID"))

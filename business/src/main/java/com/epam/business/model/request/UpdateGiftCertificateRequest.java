@@ -20,7 +20,7 @@ public class UpdateGiftCertificateRequest {
 
     @ApiModelProperty(value = "The unique name of the gift-certificate",
             name = "giftCertificateName")
-    private String giftCertificateName;
+    private String certificateName;
 
     @ApiModelProperty(value = "The price of the gift-certificate",
             name = "price",

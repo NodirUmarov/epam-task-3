@@ -123,7 +123,19 @@ public interface GiftCertificateService {
      * @throws EntityIdNotFoundException if certificate with given id not found
      * @since 0.1.0
      */
-    GiftCertificateDto changeSetOfTags(Long id, Set<TagRequest> tags) throws EntityIdNotFoundException;
+    GiftCertificateDto addTagsToCertificate(Long id, List<TagRequest> tags) throws EntityIdNotFoundException;
+
+    /**
+     * <p>Changes the set of tags of certificate.</p>
+     *
+     * @param id  must not be null nor negative or zero values
+     * @param tags elements must not be null
+     * @return updated {@link GiftCertificateDto}
+     * @throws EntityIdNotFoundException if certificate with given id not found
+     * @since 0.1.0
+     */
+    GiftCertificateDto removeTagsFromCertificate(Long id, List<TagRequest> tags) throws EntityIdNotFoundException;
+
 
     List<GiftCertificateDto> findAllByNames(List<String> giftCertificatesNames);
 }

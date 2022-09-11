@@ -7,11 +7,9 @@ import com.epam.business.model.dto.TagDto;
 import com.epam.business.model.request.TagRequest;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +34,7 @@ public class GiftCertificatesAssembler extends RepresentationModelAssemblerSuppo
     @Override
     public GiftCertificateResource toModel(GiftCertificateDto entity) {
         GiftCertificateResource resource = createModelWithId(entity.getId(), entity);
-        resource.add(linkTo(methodOn(GiftCertificateController.class).deleteById(entity.getCertificateName())).withRel("delete"));
+        resource.add(linkTo(methodOn(GiftCertificateController.class).deleteByName(entity.getCertificateName())).withRel("delete"));
         resource.add(linkTo(methodOn(GiftCertificateController.class).getById(entity.getId())).withRel("get"));
 
 
@@ -45,7 +43,7 @@ public class GiftCertificatesAssembler extends RepresentationModelAssemblerSuppo
         if (tagDto.isPresent()) {
             tagRequest.setTagName(tagDto.get().getTagName());
 
-            resource.add(linkTo(methodOn(GiftCertificateController.class).untagCertificate(entity.getId(), Set.of(tagRequest))).withRel("untag"));
+            resource.add(linkTo(methodOn(GiftCertificateController.class).untagCertificate(entity.getId(), List.of(tagRequest))).withRel("untag"));
         }
 
         resource.setId(entity.getId());
